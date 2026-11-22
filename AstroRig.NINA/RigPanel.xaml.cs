@@ -91,7 +91,7 @@ public partial class RigPanel : UserControl
         }
 
         Components.ItemsSource = inventory.Resolve(rig).Select(pair => new ComponentRow(
-            pair.Item, pair.Assignment)).ToArray();
+            pair.Item, pair.Assignment, inventory.FilterSlotSummary(pair.Item))).ToArray();
         var metrics = RigMetrics.Calculate(inventory, rig);
         Summary.Text = $"Focal length {Number(metrics.FocalLength, "mm")}   ·   f/{Number(metrics.FocalRatio, "")}\n" +
             $"Image scale {Number(metrics.ImageScale, "arcsec/px")}   ·   Field of view {Number(metrics.WidthDegrees, "°")} × {Number(metrics.HeightDegrees, "°")}\n" +
@@ -202,9 +202,10 @@ public partial class RigPanel : UserControl
 
     private sealed record FilterChoice(Guid? Id, string Name);
 
-    private sealed record ComponentRow(Equipment Item, Assignment Assignment)
+    private sealed record ComponentRow(Equipment Item, Assignment Assignment, string? SlotSummary)
     {
         public string Name => Item.ToString();
+        public string EquipmentDisplay => SlotSummary is null ? Name : $"{Name}\n{SlotSummary}";
         public string Role => Assignment.Role == AstroRig.Role.FilterWheel ? "Filter Wheel" : Assignment.Role.ToString();
         public double? Weight => Item.WeightKg > 0 ? Item.WeightKg : null;
         public bool Payload => Assignment.CountInPayload;

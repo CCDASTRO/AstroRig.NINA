@@ -28,13 +28,23 @@
         </DockPanel>
         <TextBlock x:Name="Summary" Grid.Row="2" Margin="0,4,0,8" TextWrapping="Wrap" />
         <DataGrid x:Name="Components" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectionMode="Single" SelectionChanged="SelectComponent">
+                  SelectionMode="Single" SelectionChanged="SelectComponent"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserResizeColumns="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Equipment" Binding="{Binding Name}" Width="*" />
-                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="Auto" />
-                <DataGridTextColumn Header="Weight (kg)" Binding="{Binding Weight}" Width="Auto" />
-                <DataGridCheckBoxColumn Header="Payload" Binding="{Binding Payload, Mode=OneWay}" />
-                <DataGridCheckBoxColumn Header="Backfocus" Binding="{Binding Backfocus, Mode=OneWay}" />
+                <DataGridTextColumn Header="Equipment" Binding="{Binding EquipmentDisplay}" SortMemberPath="Name" Width="*" MinWidth="150">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Padding" Value="4,2" />
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="ToolTip" Value="{Binding EquipmentDisplay}" />
+                            <Setter Property="ToolTipService.ShowDuration" Value="30000" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="Auto" MinWidth="85" />
+                <DataGridTextColumn Header="Weight (kg)" Binding="{Binding Weight}" Width="Auto" MinWidth="75" />
+                <DataGridCheckBoxColumn Header="Payload" Binding="{Binding Payload, Mode=OneWay}" Width="SizeToHeader" MinWidth="60" />
+                <DataGridCheckBoxColumn Header="Backfocus" Binding="{Binding Backfocus, Mode=OneWay}" Width="SizeToHeader" MinWidth="70" />
             </DataGrid.Columns>
         </DataGrid>
         <TextBlock x:Name="Status" Grid.Row="4" Margin="0,8,0,0" TextWrapping="Wrap" />

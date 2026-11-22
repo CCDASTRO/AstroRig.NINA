@@ -2,6 +2,12 @@
 
 This plugin targets the N.I.N.A. 3.3.0.1069 nightly plugin API and builds with the .NET 10 SDK. It shares the standalone AstroRig inventory format, rig calculations, and Excel export. The plugin can create and maintain a rig from a new inventory without installing standalone AstroRig.
 
+## View filter slots in the rig table
+
+On **Imaging → AstroRig**, select a rig. Each filter wheel shows its occupied slot count and the filter in each occupied slot beneath the equipment name. Equipment names wrap, and you can resize columns or scroll horizontally in a narrow dock.
+
+The [standalone AstroRig app](https://github.com/CCDASTRO/AstroRig) uses the same inventory format. It shows the slot list when you hover over the wheel name on the **Rigs** tab.
+
 ## Build and install
 
 1. Run `dotnet build AstroRig.NINA/AstroRig.NINA.csproj -c Release`.

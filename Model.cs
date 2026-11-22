@@ -108,6 +108,26 @@ public sealed class Inventory
         finally { File.Delete(temporary); }
     }
 
+    public string? FilterSlotSummary(Equipment item)
+    {
+        if (item.Category != Role.FilterWheel) return null;
+        if (item.FilterSlotCount < 1) return "Filter slot count is not set.";
+
+        var lines = new List<string>();
+        if (item.FilterSlots != null)
+        {
+            foreach (var (slot, id) in item.FilterSlots.OrderBy(pair => pair.Key))
+            {
+                if (slot < 1 || slot > item.FilterSlotCount) continue;
+                var filter = Equipment.Find(candidate => candidate.Id == id && candidate.Category == Role.Filter);
+                lines.Add($"Slot {slot}: {filter?.ToString() ?? "Filter unavailable"}");
+            }
+        }
+
+        lines.Insert(0, $"Filter slots: {lines.Count} of {item.FilterSlotCount} occupied");
+        return string.Join(Environment.NewLine, lines);
+    }
+
     public IEnumerable<(Assignment Assignment, Equipment Item)> Resolve(Rig rig)
     {
         var byId = Equipment.ToDictionary(item => item.Id);
