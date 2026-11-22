@@ -10,6 +10,47 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <WrapPanel>
+            <WrapPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="MinHeight" Value="26" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="3" Padding="{TemplateBinding Padding}"
+                                        TextElement.Foreground="{TemplateBinding Foreground}" SnapsToDevicePixels="True">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                      RecognizesAccessKey="True" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2" />
+                                        <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </WrapPanel.Resources>
             <Button Content="New inventory" Click="NewInventory" Padding="8,3" Margin="0,0,6,4" />
             <Button Content="Add equipment" Click="AddEquipment" Padding="8,3" Margin="0,0,6,4" />
             <Button Content="Add rig" Click="AddRig" Padding="8,3" Margin="0,0,6,4" />
@@ -30,17 +71,61 @@
         <DataGrid x:Name="Components" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionMode="Single" SelectionChanged="SelectComponent"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserResizeColumns="True">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border Background="{TemplateBinding Background}"
+                                        TextElement.Foreground="{TemplateBinding Foreground}">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                        </DataTrigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Equipment" Binding="{Binding EquipmentDisplay}" SortMemberPath="Name" Width="*" MinWidth="150">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Padding" Value="4,2" />
-                            <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="ToolTip" Value="{Binding EquipmentTooltip}" />
-                            <Setter Property="ToolTipService.ShowDuration" Value="30000" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Equipment" SortMemberPath="Name" Width="*" MinWidth="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding EquipmentDisplay}" Padding="4,2" TextWrapping="Wrap"
+                                       Background="Transparent"
+                                       Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridCell}}"
+                                       ToolTipService.ShowDuration="30000">
+                                <TextBlock.ToolTip>
+                                    <ToolTip Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+                                             Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}"
+                                             BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}">
+                                        <ToolTip.Template>
+                                            <ControlTemplate TargetType="ToolTip">
+                                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="1" CornerRadius="3" Padding="8,6">
+                                                    <ContentPresenter />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ToolTip.Template>
+                                        <TextBlock MaxWidth="360" TextWrapping="Wrap"
+                                                   Foreground="{DynamicResource {x:Static SystemColors.InfoTextBrushKey}}"
+                                                   Text="{Binding PlacementTarget.DataContext.EquipmentTooltip, RelativeSource={RelativeSource AncestorType=ToolTip}}" />
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="Auto" MinWidth="85" />
                 <DataGridTextColumn Header="Weight (kg)" Binding="{Binding Weight}" Width="Auto" MinWidth="75" />
                 <DataGridCheckBoxColumn Header="Payload" Binding="{Binding Payload, Mode=OneWay}" Width="SizeToHeader" MinWidth="60" />

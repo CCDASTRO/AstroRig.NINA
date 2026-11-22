@@ -10,6 +10,10 @@ The [standalone AstroRig app](https://github.com/CCDASTRO/AstroRig) uses the sam
 
 Hover over any equipment name in the rig table to see its saved specs.
 
+## Install the release
+
+Download the ZIP from [GitHub Releases](https://github.com/CCDASTRO/AstroRig.NINA/releases). With N.I.N.A. closed, extract the ZIP contents into `%LOCALAPPDATA%\NINA\Plugins\3.0.0\AstroRig`. Restart N.I.N.A. and open **Imaging → AstroRig**. The AstroRig telescope icon appears in **Plugins → Installed**.
+
 ## Build and install
 
 1. Run `dotnet build AstroRig.NINA/AstroRig.NINA.csproj -c Release`.

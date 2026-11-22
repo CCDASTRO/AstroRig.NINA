@@ -14,6 +14,7 @@ using NINA.WPF.Base.ViewModel;
 [assembly: AssemblyMetadata("License", "MPL-2.0")]
 [assembly: AssemblyMetadata("LicenseURL", "https://www.mozilla.org/MPL/2.0/")]
 [assembly: AssemblyMetadata("Repository", "https://github.com/CCDASTRO/AstroRig.NINA")]
+[assembly: AssemblyMetadata("FeaturedImageURL", "https://github.com/CCDASTRO/AstroRig/releases/download/v1.0.11/AstroRig-Plugin-Icon.png")]
 
 namespace AstroRig.NinaPlugin;
 
