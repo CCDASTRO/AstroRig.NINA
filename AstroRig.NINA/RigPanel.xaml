@@ -1,0 +1,42 @@
+<UserControl x:Class="AstroRig.NinaPlugin.RigPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <WrapPanel>
+            <Button Content="New inventory" Click="NewInventory" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Add equipment" Click="AddEquipment" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Add rig" Click="AddRig" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Edit rig" Click="EditSelectedRig" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Assign equipment" Click="AssignEquipment" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Edit assignment" Click="EditComponent" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Remove assignment" Click="RemoveComponent" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Open inventory" Click="OpenInventory" Padding="8,3" Margin="0,0,6,4" />
+            <Button Content="Reload" Click="ReloadInventory" Padding="8,3" Margin="0,0,6,4" />
+            <Button x:Name="ExportButton" Content="Export Excel" Click="ExportInventory" Padding="8,3" Margin="0,0,6,4" IsEnabled="False" />
+            <Button x:Name="SlotsButton" Content="Assign filters to slots" Click="EditSlots" Padding="8,3" Margin="0,0,0,4" IsEnabled="False" />
+        </WrapPanel>
+        <DockPanel Grid.Row="1" Margin="0,4,0,4">
+            <Label Content="Rig" Target="{Binding ElementName=Rigs}" />
+            <ComboBox x:Name="Rigs" DisplayMemberPath="Name" SelectionChanged="ShowRig" />
+        </DockPanel>
+        <TextBlock x:Name="Summary" Grid.Row="2" Margin="0,4,0,8" TextWrapping="Wrap" />
+        <DataGrid x:Name="Components" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectionMode="Single" SelectionChanged="SelectComponent">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Equipment" Binding="{Binding Name}" Width="*" />
+                <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="Auto" />
+                <DataGridTextColumn Header="Weight (kg)" Binding="{Binding Weight}" Width="Auto" />
+                <DataGridCheckBoxColumn Header="Payload" Binding="{Binding Payload, Mode=OneWay}" />
+                <DataGridCheckBoxColumn Header="Backfocus" Binding="{Binding Backfocus, Mode=OneWay}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock x:Name="Status" Grid.Row="4" Margin="0,8,0,0" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>
