@@ -10,6 +10,10 @@ The [standalone AstroRig app](https://github.com/CCDASTRO/AstroRig) uses the sam
 
 Hover over any equipment name in the rig table to see its saved specs.
 
+## Plugin Manager
+
+In **Plugins → Installed → AstroRig**, Description explains the workflow, Showcase illustrates a sample rig, and Additional info links to setup, source, and release notes. The Versions tab lists releases supplied by the configured N.I.N.A. plugin catalog. GitHub Releases provides the manual ZIP.
+
 ## Install the release
 
 Download the ZIP from [GitHub Releases](https://github.com/CCDASTRO/AstroRig.NINA/releases). With N.I.N.A. closed, extract the ZIP contents into `%LOCALAPPDATA%\NINA\Plugins\3.0.0\AstroRig`. Restart N.I.N.A. and open **Imaging → AstroRig**. The AstroRig telescope icon appears in **Plugins → Installed**.
