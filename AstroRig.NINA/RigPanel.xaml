@@ -36,7 +36,7 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Padding" Value="4,2" />
                             <Setter Property="TextWrapping" Value="Wrap" />
-                            <Setter Property="ToolTip" Value="{Binding EquipmentDisplay}" />
+                            <Setter Property="ToolTip" Value="{Binding EquipmentTooltip}" />
                             <Setter Property="ToolTipService.ShowDuration" Value="30000" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>

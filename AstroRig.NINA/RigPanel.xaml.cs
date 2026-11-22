@@ -205,6 +205,7 @@ public partial class RigPanel : UserControl
     private sealed record ComponentRow(Equipment Item, Assignment Assignment, string? SlotSummary)
     {
         public string Name => Item.ToString();
+        public string EquipmentTooltip => EquipmentFields.SpecsTooltip(Item, SlotSummary);
         public string EquipmentDisplay => SlotSummary is null ? Name : $"{Name}\n{SlotSummary}";
         public string Role => Assignment.Role == AstroRig.Role.FilterWheel ? "Filter Wheel" : Assignment.Role.ToString();
         public double? Weight => Item.WeightKg > 0 ? Item.WeightKg : null;

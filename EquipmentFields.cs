@@ -57,6 +57,33 @@ internal sealed class EquipmentFields(Equipment item, bool adding = false) : Cus
         return new PropertyDescriptorCollection(properties, true);
     }
 
+    internal static string SpecsTooltip(Equipment item, string? slotSummary)
+    {
+        var lines = new List<string> { item.ToString() };
+        foreach (PropertyDescriptor property in new EquipmentFields(item).GetProperties())
+        {
+            if (Common.Contains(property.Name) && property.Name != nameof(Equipment.WeightKg) ||
+                property.Name == nameof(Equipment.FilterSlotCount))
+                continue;
+
+            var value = property.GetValue(item) switch
+            {
+                string text when !string.IsNullOrWhiteSpace(text) => text.Trim(),
+                double number when double.IsFinite(number) && number > 0 => number.ToString("0.###"),
+                int count when count > 0 => count.ToString(),
+                true => "Yes",
+                GuideDeviceKind.OffAxisGuider => "Off-axis guider",
+                GuideDeviceKind.GuideScope => "Guide scope",
+                _ => null
+            };
+            if (value != null) lines.Add($"{property.DisplayName}: {value}");
+        }
+
+        if (slotSummary != null) lines.Add(slotSummary);
+        if (lines.Count == 1) lines.Add("No specs recorded.");
+        return string.Join(Environment.NewLine, lines);
+    }
+
     public override object GetPropertyOwner(PropertyDescriptor? pd) => item;
 
     public static string TypeLabel(Role role) => role switch

@@ -8,6 +8,8 @@ On **Imaging → AstroRig**, select a rig. Each filter wheel shows its occupied 
 
 The [standalone AstroRig app](https://github.com/CCDASTRO/AstroRig) uses the same inventory format. It shows the slot list when you hover over the wheel name on the **Rigs** tab.
 
+Hover over any equipment name in the rig table to see its saved specs.
+
 ## Build and install
 
 1. Run `dotnet build AstroRig.NINA/AstroRig.NINA.csproj -c Release`.
