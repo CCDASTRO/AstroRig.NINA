@@ -6,6 +6,7 @@ namespace AstroRig;
 
 internal static class ExcelExport
 {
+    private const int EquipmentSheetIndex = 2;
     private static readonly XNamespace Main = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
     private static readonly XNamespace Rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
     private static readonly XNamespace PackageRel = "http://schemas.openxmlformats.org/package/2006/relationships";
@@ -40,7 +41,7 @@ internal static class ExcelExport
         Save(zip, "xl/_rels/workbook.xml.rels", new XElement(PackageRel + "Relationships",
             names.Select((_, i) => Link(i + 1, "worksheet", $"worksheets/sheet{i + 1}.xml")), Link(4, "styles", "styles.xml")));
         Save(zip, "xl/workbook.xml", new XElement(Main + "workbook", new XAttribute(XNamespace.Xmlns + "r", Rel.NamespaceName),
-            new XElement(Main + "bookViews", new XElement(Main + "workbookView", new XAttribute("activeTab", 0))),
+            new XElement(Main + "bookViews", new XElement(Main + "workbookView", new XAttribute("activeTab", EquipmentSheetIndex - 1))),
             new XElement(Main + "sheets", names.Select((name, i) => new XElement(Main + "sheet",
                 new XAttribute("name", name), new XAttribute("sheetId", i + 1), new XAttribute(Rel + "id", $"rId{i + 1}"))))));
         Save(zip, "xl/styles.xml", XElement.Parse(
@@ -67,7 +68,7 @@ internal static class ExcelExport
                 m.FocalRatio, m.ImageScale, m.WidthDegrees, m.HeightDegrees, m.Payload, m.MissingWeights, m.RatedPayload, m.ImagingTarget,
                 m.Headroom, m.RequiredBackfocus, m.Spacing, m.Remaining, rig.Notes };
         }));
-        Sheet(zip, 2, ["Equipment ID", "Brand", "Model", "Category", "Weight (kg)", "Status", "Purchase cost", "Notes",
+        Sheet(zip, EquipmentSheetIndex, ["Equipment ID", "Brand", "Model", "Category", "Weight (kg)", "Status", "Purchase cost", "Notes",
             "Aperture (mm)", "Focal length (mm)", "Focal multiplier", "Image circle (mm)", "Pixel size (µm)", "Sensor width (mm)",
             "Sensor height (mm)", "Resolution X", "Resolution Y", "Spacing (mm)", "Input thread", "Output thread", "Rated payload (kg)",
             "Imaging target (kg)", "Mount type", "Optical design", "Guide device type", "Cooled camera", "Built-in guider",
@@ -96,6 +97,7 @@ internal static class ExcelExport
             new XAttribute("customWidth", 1)));
         Save(zip, $"xl/worksheets/sheet{index}.xml", new XElement(Main + "worksheet",
             new XElement(Main + "sheetViews", new XElement(Main + "sheetView", new XAttribute("workbookViewId", 0),
+                index == EquipmentSheetIndex ? new XAttribute("tabSelected", 1) : null,
                 new XElement(Main + "pane", new XAttribute("ySplit", 1), new XAttribute("topLeftCell", "A2"),
                     new XAttribute("activePane", "bottomLeft"), new XAttribute("state", "frozen")))),
             new XElement(Main + "cols", columns),

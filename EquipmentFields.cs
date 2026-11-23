@@ -57,6 +57,9 @@ internal sealed class EquipmentFields(Equipment item, bool adding = false) : Cus
         return new PropertyDescriptorCollection(properties, true);
     }
 
+    internal static string FormatWeight(double? kilograms) => kilograms is double value && double.IsFinite(value)
+        ? $"{value:0.###} kg / {value / 0.45359237:0.###} lb" : "—";
+
     internal static string SpecsTooltip(Equipment item, string? slotSummary)
     {
         var lines = new List<string> { item.ToString() };
@@ -65,6 +68,13 @@ internal sealed class EquipmentFields(Equipment item, bool adding = false) : Cus
             if (Common.Contains(property.Name) && property.Name != nameof(Equipment.WeightKg) ||
                 property.Name == nameof(Equipment.FilterSlotCount))
                 continue;
+
+            if (property.Name is nameof(Equipment.WeightKg) or nameof(Equipment.RatedPayloadKg) or nameof(Equipment.ImagingTargetKg))
+            {
+                if (property.GetValue(item) is double weight && double.IsFinite(weight) && weight > 0)
+                    lines.Add($"{property.DisplayName.Replace(" (kg)", "")}: {FormatWeight(weight)}");
+                continue;
+            }
 
             var value = property.GetValue(item) switch
             {

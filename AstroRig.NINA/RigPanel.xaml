@@ -1,6 +1,9 @@
 <UserControl x:Class="AstroRig.NinaPlugin.RigPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <ResourceDictionary Source="ReadableControls.xaml" />
+    </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -10,47 +13,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <WrapPanel>
-            <WrapPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" />
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="MinHeight" Value="26" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="3" Padding="{TemplateBinding Padding}"
-                                        TextElement.Foreground="{TemplateBinding Foreground}" SnapsToDevicePixels="True">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                      RecognizesAccessKey="True" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
-                                    </Trigger>
-                                    <Trigger Property="IsKeyboardFocused" Value="True">
-                                        <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="2" />
-                                        <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
-                                    </Trigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
-                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </WrapPanel.Resources>
             <Button Content="New inventory" Click="NewInventory" Padding="8,3" Margin="0,0,6,4" />
             <Button Content="Add equipment" Click="AddEquipment" Padding="8,3" Margin="0,0,6,4" />
             <Button Content="Add rig" Click="AddRig" Padding="8,3" Margin="0,0,6,4" />
@@ -67,7 +29,11 @@
             <Label Content="Rig" Target="{Binding ElementName=Rigs}" />
             <ComboBox x:Name="Rigs" DisplayMemberPath="Name" SelectionChanged="ShowRig" />
         </DockPanel>
-        <TextBlock x:Name="Summary" Grid.Row="2" Margin="0,4,0,8" TextWrapping="Wrap" />
+        <StackPanel Grid.Row="2" Margin="0,4,0,8">
+            <CheckBox x:Name="ShowRigCost" Content="Show rig cost" Checked="RigCostChanged" Unchecked="RigCostChanged" />
+            <TextBlock x:Name="RigCost" Margin="0,2,0,0" TextWrapping="Wrap" Visibility="Collapsed" />
+            <TextBlock x:Name="Summary" Margin="0,4,0,0" TextWrapping="Wrap" />
+        </StackPanel>
         <DataGrid x:Name="Components" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionMode="Single" SelectionChanged="SelectComponent"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserResizeColumns="True">
@@ -127,7 +93,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Role" Binding="{Binding Role}" Width="Auto" MinWidth="85" />
-                <DataGridTextColumn Header="Weight (kg)" Binding="{Binding Weight}" Width="Auto" MinWidth="75" />
+                <DataGridTextColumn Header="Weight (kg / lb)" Binding="{Binding Weight}" SortMemberPath="Item.WeightKg" Width="SizeToHeader" MinWidth="125" />
                 <DataGridCheckBoxColumn Header="Payload" Binding="{Binding Payload, Mode=OneWay}" Width="SizeToHeader" MinWidth="60" />
                 <DataGridCheckBoxColumn Header="Backfocus" Binding="{Binding Backfocus, Mode=OneWay}" Width="SizeToHeader" MinWidth="70" />
             </DataGrid.Columns>

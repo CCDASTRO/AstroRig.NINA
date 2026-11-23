@@ -295,6 +295,7 @@ public partial class RigPanel
         DockPanel.SetDock(error, Dock.Bottom);
         layout.Children.Add(error);
         layout.Children.Add(new ScrollViewer { Content = fields, MaxHeight = 455, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
+        ApplyDialogStyles(window);
         window.Content = layout;
         return window.ShowDialog() == true;
     }

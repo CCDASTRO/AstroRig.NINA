@@ -33,6 +33,16 @@ public partial class RigPanel : UserControl
         }
     }
 
+    private static void ApplyDialogStyles(Window dialog)
+    {
+        dialog.Resources.MergedDictionaries.Add(new ResourceDictionary
+        {
+            Source = new Uri("/AstroRig.NINA;component/ReadableControls.xaml", UriKind.Relative)
+        });
+        dialog.SetResourceReference(BackgroundProperty, SystemColors.WindowBrushKey);
+        dialog.SetResourceReference(ForegroundProperty, SystemColors.WindowTextBrushKey);
+    }
+
     private void OpenInventory(object sender, RoutedEventArgs args)
     {
         var dialog = new OpenFileDialog { Filter = "AstroRig inventory (*.json)|*.json", CheckFileExists = true };
@@ -83,6 +93,7 @@ public partial class RigPanel : UserControl
 
     private void ShowRig(object sender, SelectionChangedEventArgs args)
     {
+        UpdateRigCost();
         if (inventory == null || Rigs.SelectedItem is not Rig rig)
         {
             Components.ItemsSource = null;
@@ -95,9 +106,27 @@ public partial class RigPanel : UserControl
         var metrics = RigMetrics.Calculate(inventory, rig);
         Summary.Text = $"Focal length {Number(metrics.FocalLength, "mm")}   ·   f/{Number(metrics.FocalRatio, "")}\n" +
             $"Image scale {Number(metrics.ImageScale, "arcsec/px")}   ·   Field of view {Number(metrics.WidthDegrees, "°")} × {Number(metrics.HeightDegrees, "°")}\n" +
-            $"Payload {Number(metrics.Payload, "kg")}   ·   Rated {Number(metrics.RatedPayload, "kg")}   ·   Imaging target {Number(metrics.ImagingTarget, "kg")}   ·   Headroom {Number(metrics.Headroom, "kg")}\n" +
+            $"Payload {EquipmentFields.FormatWeight(metrics.Payload)}   ·   Headroom {EquipmentFields.FormatWeight(metrics.Headroom)}\n" +
+            $"Rated {EquipmentFields.FormatWeight(metrics.RatedPayload)}   ·   Imaging target {EquipmentFields.FormatWeight(metrics.ImagingTarget)}\n" +
             $"Backfocus target {Number(metrics.RequiredBackfocus, "mm")}   ·   Recorded {Number(metrics.Spacing, "mm")}   ·   Remaining {Number(metrics.Remaining, "mm")}";
         if (metrics.MissingWeights > 0) Summary.Text += $"\nMissing weights: {metrics.MissingWeights}";
+    }
+
+    private void RigCostChanged(object sender, RoutedEventArgs args) => UpdateRigCost();
+
+    private void UpdateRigCost()
+    {
+        if (RigCost == null) return;
+        if (ShowRigCost.IsChecked == true && inventory != null && Rigs.SelectedItem is Rig rig)
+        {
+            var cost = inventory.RecordedRigCost(rig);
+            RigCost.Text = cost is double total ? $"Recorded rig cost  {total:N2}" : "Recorded rig cost  —";
+            RigCost.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            RigCost.Visibility = Visibility.Collapsed;
+        }
     }
 
     private static string Number(double? value, string unit) => value is double numeric ? $"{numeric:0.##} {unit}".TrimEnd() : "—";
@@ -166,6 +195,7 @@ public partial class RigPanel : UserControl
         DockPanel.SetDock(buttons, Dock.Bottom);
         layout.Children.Add(buttons);
         layout.Children.Add(new ScrollViewer { Content = rows, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
+        ApplyDialogStyles(dialog);
         dialog.Content = layout;
         if (dialog.ShowDialog() != true) return;
 
@@ -208,7 +238,7 @@ public partial class RigPanel : UserControl
         public string EquipmentTooltip => EquipmentFields.SpecsTooltip(Item, SlotSummary);
         public string EquipmentDisplay => SlotSummary is null ? Name : $"{Name}\n{SlotSummary}";
         public string Role => Assignment.Role == AstroRig.Role.FilterWheel ? "Filter Wheel" : Assignment.Role.ToString();
-        public double? Weight => Item.WeightKg > 0 ? Item.WeightKg : null;
+        public string Weight => EquipmentFields.FormatWeight(Item.WeightKg > 0 ? Item.WeightKg : null);
         public bool Payload => Assignment.CountInPayload;
         public bool Backfocus => Assignment.CountInBackfocus;
     }

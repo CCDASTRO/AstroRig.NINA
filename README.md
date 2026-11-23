@@ -10,6 +10,12 @@ The [standalone AstroRig app](https://github.com/CCDASTRO/AstroRig) uses the sam
 
 Hover over any equipment name in the rig table to see its saved specs.
 
+## Rig costs and weights
+
+- Use **Show rig cost** to see the selected rig's total recorded purchase cost. Assigned equipment and loaded filters each count once.
+- Rig tables, payload summaries, and equipment tooltips show weights in both kilograms and pounds.
+- Excel exports open on the **Equipment** sheet.
+
 ## Plugin Manager
 
 In **Plugins → Installed → AstroRig**, Description explains the workflow, Showcase illustrates a sample rig, and Additional info links to setup, source, and release notes. The Versions tab lists releases supplied by the configured N.I.N.A. plugin catalog. GitHub Releases provides the manual ZIP.

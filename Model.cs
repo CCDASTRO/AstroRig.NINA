@@ -128,6 +128,17 @@ public sealed class Inventory
         return string.Join(Environment.NewLine, lines);
     }
 
+    public double? RecordedRigCost(Rig rig)
+    {
+        var assigned = Resolve(rig).Select(pair => pair.Item).DistinctBy(item => item.Id).ToArray();
+        var loadedFilterIds = assigned.Where(item => item.Category == Role.FilterWheel && item.FilterSlots != null)
+            .SelectMany(wheel => wheel.FilterSlots!.Where(slot => slot.Key >= 1 && slot.Key <= wheel.FilterSlotCount))
+            .Select(slot => slot.Value).ToHashSet();
+        var priced = assigned.Concat(Equipment.Where(item => item.Category == Role.Filter && loadedFilterIds.Contains(item.Id)))
+            .DistinctBy(item => item.Id).Where(item => double.IsFinite(item.PurchaseCost) && item.PurchaseCost > 0).ToArray();
+        return priced.Length == 0 ? null : priced.Sum(item => item.PurchaseCost);
+    }
+
     public IEnumerable<(Assignment Assignment, Equipment Item)> Resolve(Rig rig)
     {
         var byId = Equipment.ToDictionary(item => item.Id);

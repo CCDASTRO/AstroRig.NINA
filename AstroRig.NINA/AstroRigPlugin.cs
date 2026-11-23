@@ -16,7 +16,7 @@ using NINA.WPF.Base.ViewModel;
 [assembly: AssemblyMetadata("Repository", "https://github.com/CCDASTRO/AstroRig.NINA")]
 [assembly: AssemblyMetadata("FeaturedImageURL", "https://github.com/CCDASTRO/AstroRig/releases/download/v1.0.11/AstroRig-Plugin-Icon.png")]
 [assembly: AssemblyMetadata("Homepage", "https://github.com/CCDASTRO/AstroRig.NINA#readme")]
-[assembly: AssemblyMetadata("ChangelogURL", "https://github.com/CCDASTRO/AstroRig.NINA/releases/tag/v1.0.3")]
+[assembly: AssemblyMetadata("ChangelogURL", "https://github.com/CCDASTRO/AstroRig.NINA/releases/tag/v1.0.4")]
 [assembly: AssemblyMetadata("Tags", "Equipment,Rig Planning,Inventory")]
 [assembly: AssemblyMetadata("LongDescription", @"AstroRig keeps one equipment inventory for multiple imaging rigs. Review payload, backfocus, image scale, and field of view. See occupied filter-wheel slots in the rig table, hover over equipment for its saved specs, and export to Excel. To start, open Imaging > AstroRig and create an inventory or open the same JSON file used by standalone AstroRig. Download the plugin ZIP from the homepage or release notes, extract it into %LOCALAPPDATA%\NINA\Plugins\3.0.0\AstroRig with N.I.N.A. closed, then restart.")]
 [assembly: AssemblyMetadata("ScreenshotURL", "https://github.com/CCDASTRO/AstroRig.NINA/releases/download/v1.0.3/AstroRig-Showcase.png")]
