@@ -24,6 +24,8 @@ In **Plugins → Installed → AstroRig**, Description explains the workflow, Sh
 
 Download the ZIP from [GitHub Releases](https://github.com/CCDASTRO/AstroRig.NINA/releases). With N.I.N.A. closed, extract the ZIP contents into `%LOCALAPPDATA%\NINA\Plugins\3.0.0\AstroRig`. Restart N.I.N.A. and open **Imaging → AstroRig**. The AstroRig telescope icon appears in **Plugins → Installed**.
 
+Enter required backfocus in the telescope equipment details when applicable. The rig uses its own target first, then the reducer requirement, then the telescope requirement.
+
 ## Build and install
 
 1. Run `dotnet build AstroRig.NINA/AstroRig.NINA.csproj -c Release`.

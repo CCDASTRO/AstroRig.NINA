@@ -19,7 +19,7 @@ internal sealed class EquipmentFields(Equipment item, bool adding = false) : Cus
             Role.Mount => [nameof(Equipment.MountType), nameof(Equipment.RatedPayloadKg), nameof(Equipment.ImagingTargetKg),
                 nameof(Equipment.PowerConnection)],
             Role.Optics => [nameof(Equipment.ApertureMm), nameof(Equipment.FocalLengthMm), nameof(Equipment.ImageCircleMm),
-                nameof(Equipment.OpticalDesign), nameof(Equipment.OutputThread)],
+                nameof(Equipment.OpticalDesign), nameof(Equipment.RequiredBackfocusMm), nameof(Equipment.OutputThread)],
             Role.MainCamera => [nameof(Equipment.PixelSizeUm), nameof(Equipment.SensorWidthMm),
                 nameof(Equipment.SensorHeightMm), nameof(Equipment.ResolutionX), nameof(Equipment.ResolutionY),
                 nameof(Equipment.Cooled), nameof(Equipment.BuiltInGuider), nameof(Equipment.PowerConnection),

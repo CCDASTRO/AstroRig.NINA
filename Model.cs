@@ -162,7 +162,7 @@ internal sealed record RigMetrics(double? FocalLength, double? FocalRatio, doubl
         var mount = Find(Role.Mount);
         var reducer = Find(Role.Reducer);
         var focal = Positive(optics?.FocalLengthMm) * (Positive(reducer?.FocalMultiplier) ?? 1);
-        var required = Positive(rig.RequiredBackfocusMm) ?? Positive(reducer?.RequiredBackfocusMm);
+        var required = Positive(rig.RequiredBackfocusMm) ?? Positive(reducer?.RequiredBackfocusMm) ?? Positive(optics?.RequiredBackfocusMm);
         var payloadItems = items.Where(x => x.Assignment.CountInPayload).ToArray();
         var missing = payloadItems.Count(x => x.Item.WeightKg <= 0);
         double? payload = payloadItems.Any(x => x.Item.WeightKg > 0) ? payloadItems.Sum(x => x.Item.WeightKg) : null;

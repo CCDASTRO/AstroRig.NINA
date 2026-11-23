@@ -4,7 +4,7 @@
   "Version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "4",
+    "Patch": "5",
     "Build": "0"
   },
   "Author": "CCDASTRO",
@@ -12,7 +12,7 @@
   "Repository": "https://github.com/CCDASTRO/AstroRig.NINA",
   "License": "MPL-2.0",
   "LicenseURL": "https://www.mozilla.org/MPL/2.0/",
-  "ChangelogURL": "https://github.com/CCDASTRO/AstroRig.NINA/releases/tag/v1.0.4",
+  "ChangelogURL": "https://github.com/CCDASTRO/AstroRig.NINA/releases/tag/v1.0.5",
   "Tags": [
     "Equipment",
     "Rig Planning",
@@ -32,9 +32,9 @@
     "AltScreenshotURL": ""
   },
   "Installer": {
-    "URL": "https://github.com/CCDASTRO/AstroRig.NINA/releases/download/v1.0.4/AstroRig-NINA-1.0.4.zip",
+    "URL": "https://github.com/CCDASTRO/AstroRig.NINA/releases/download/v1.0.5/AstroRig-NINA-1.0.5.zip",
     "Type": "ARCHIVE",
-    "Checksum": "CD9B81EB782709462FEE683D4D93D130498239C29A3424610A60F6177E03FED7",
+    "Checksum": "1A0081A061D1043D7907E37FFA67DB26F387416B5251730A77949F092A24EA1B",
     "ChecksumType": "SHA256"
   },
   "Channel": "Beta"
