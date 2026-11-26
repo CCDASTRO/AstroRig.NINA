@@ -89,7 +89,7 @@ public sealed class Inventory
         if (!File.Exists(path)) return new();
         var inventory = JsonSerializer.Deserialize<Inventory>(File.ReadAllText(path), Options);
         if (inventory?.Equipment == null || inventory.Rigs == null ||
-            inventory.Rigs.Any(rig => rig == null || rig.Items == null) ||
+            inventory.Rigs.Any(rig => rig == null || rig.Items == null || rig.Items.Any(assignment => assignment == null)) ||
             inventory.Equipment.Any(item => item == null) ||
             inventory.Equipment.Select(item => item.Id).Distinct().Count() != inventory.Equipment.Count)
             throw new InvalidDataException("Invalid AstroRig inventory.");
