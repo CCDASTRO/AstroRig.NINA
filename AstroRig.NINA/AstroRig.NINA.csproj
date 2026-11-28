@@ -7,7 +7,7 @@
     <AssemblyTitle>AstroRig</AssemblyTitle>
     <Description>Equipment inventory and rig planning inside N.I.N.A.</Description>
     <Company>CCDASTRO</Company>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>

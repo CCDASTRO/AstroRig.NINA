@@ -27,6 +27,15 @@
         </WrapPanel>
         <DockPanel Grid.Row="1" Margin="0,4,0,4">
             <Label Content="Rig" Target="{Binding ElementName=Rigs}" />
+            <StackPanel Orientation="Horizontal" Margin="8,0,0,0" DockPanel.Dock="Right">
+                <Label Content="Equipment view" Target="{Binding ElementName=EquipmentViewMode}" />
+                <ComboBox x:Name="EquipmentViewMode" MinWidth="105" SelectedIndex="0"
+                          SelectionChanged="ChangeEquipmentView">
+                    <ComboBoxItem Content="Rig order" />
+                    <ComboBoxItem Content="Alphabetical" />
+                    <ComboBoxItem Content="By type" />
+                </ComboBox>
+            </StackPanel>
             <ComboBox x:Name="Rigs" DisplayMemberPath="Name" SelectionChanged="ShowRig" />
         </DockPanel>
         <StackPanel Grid.Row="2" Margin="0,4,0,8">
@@ -37,6 +46,26 @@
         <DataGrid x:Name="Components" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionMode="Single" SelectionChanged="SelectComponent"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" CanUserResizeColumns="True">
+            <DataGrid.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="GroupItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GroupItem">
+                                        <Expander IsExpanded="True" HorizontalContentAlignment="Stretch">
+                                            <Expander.Header>
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </DataGrid.GroupStyle>
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />

@@ -1,7 +1,9 @@
+using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using Microsoft.Win32;
 
 namespace AstroRig.NinaPlugin;
@@ -103,6 +105,7 @@ public partial class RigPanel : UserControl
 
         Components.ItemsSource = inventory.Resolve(rig).Select(pair => new ComponentRow(
             pair.Item, pair.Assignment, inventory.FilterSlotSummary(pair.Item))).ToArray();
+        ApplyEquipmentView();
         var metrics = RigMetrics.Calculate(inventory, rig);
         Summary.Text = $"Focal length {Number(metrics.FocalLength, "mm")}   ·   f/{Number(metrics.FocalRatio, "")}\n" +
             $"Image scale {Number(metrics.ImageScale, "arcsec/px")}   ·   Field of view {Number(metrics.WidthDegrees, "°")} × {Number(metrics.HeightDegrees, "°")}\n" +
@@ -110,6 +113,31 @@ public partial class RigPanel : UserControl
             $"Rated {EquipmentFields.FormatWeight(metrics.RatedPayload)}   ·   Imaging target {EquipmentFields.FormatWeight(metrics.ImagingTarget)}\n" +
             $"Backfocus target {Number(metrics.RequiredBackfocus, "mm")}   ·   Recorded {Number(metrics.Spacing, "mm")}   ·   Remaining {Number(metrics.Remaining, "mm")}";
         if (metrics.MissingWeights > 0) Summary.Text += $"\nMissing weights: {metrics.MissingWeights}";
+    }
+
+    private void ChangeEquipmentView(object sender, SelectionChangedEventArgs args) => ApplyEquipmentView();
+
+    private void ApplyEquipmentView()
+    {
+        if (Components?.ItemsSource is not System.Collections.IList rows) return;
+
+        var selected = Components.SelectedItem;
+        var view = (ListCollectionView)CollectionViewSource.GetDefaultView(rows);
+        using (view.DeferRefresh())
+        {
+            view.GroupDescriptions.Clear();
+            view.SortDescriptions.Clear();
+            if (EquipmentViewMode.SelectedIndex == 2)
+            {
+                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(ComponentRow.EquipmentType)));
+                view.SortDescriptions.Add(new SortDescription(nameof(ComponentRow.EquipmentType), ListSortDirection.Ascending));
+            }
+            if (EquipmentViewMode.SelectedIndex > 0)
+                view.SortDescriptions.Add(new SortDescription(nameof(ComponentRow.Name), ListSortDirection.Ascending));
+        }
+
+        foreach (var column in Components.Columns) column.SortDirection = null;
+        if (selected != null) Components.SelectedItem = selected;
     }
 
     private void RigCostChanged(object sender, RoutedEventArgs args) => UpdateRigCost();
@@ -235,6 +263,7 @@ public partial class RigPanel : UserControl
     private sealed record ComponentRow(Equipment Item, Assignment Assignment, string? SlotSummary)
     {
         public string Name => Item.ToString();
+        public string EquipmentType => EquipmentFields.TypeLabel(Item.Category);
         public string EquipmentTooltip => EquipmentFields.SpecsTooltip(Item, SlotSummary);
         public string EquipmentDisplay => SlotSummary is null ? Name : $"{Name}\n{SlotSummary}";
         public string Role => Assignment.Role == AstroRig.Role.FilterWheel ? "Filter Wheel" : Assignment.Role.ToString();

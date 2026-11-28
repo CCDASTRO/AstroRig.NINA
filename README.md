@@ -2,6 +2,10 @@
 
 This plugin targets the N.I.N.A. 3.3.0.1069 nightly plugin API and builds with the .NET 10 SDK. It shares the standalone AstroRig inventory format, rig calculations, and Excel export. The plugin can create and maintain a rig from a new inventory without installing standalone AstroRig.
 
+## Choose an equipment view
+
+In AstroRig 1.0.6, use **Equipment view** beside the rig selector. **Rig order** uses the saved assignment order, **Alphabetical** sorts by equipment name, and **By type** groups assignments under collapsible equipment categories. Switching views keeps the selected assignment and leaves the saved order intact.
+
 ## View filter slots in the rig table
 
 On **Imaging → AstroRig**, select a rig. Each filter wheel shows its occupied slot count and the filter in each occupied slot beneath the equipment name. Equipment names wrap, and you can resize columns or scroll horizontally in a narrow dock.
